@@ -1,31 +1,38 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
+import {RouterLinkWithHref, RouterOutlet} from '@angular/router';
+import {HeaderComponent} from './components/header/header.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
-describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+describe( '[COMPONENT] app component', () => {
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  beforeEach( () => {
+   TestBed.configureTestingModule({
+     declarations: [
+       AppComponent,
+       HeaderComponent
+     ],
+     imports: [
+       RouterTestingModule.withRoutes([])
+     ],
+     schemas: [
+       NO_ERRORS_SCHEMA
+     ]
+   }).compileComponents();
   });
 
-  it(`should have as title 'unit-test'`, () => {
+  it('should exist router-outlet', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('unit-test');
+    const el = fixture.debugElement.query(By.directive((RouterOutlet)));
+    expect(el).not.toBeNull();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('unit-test app is running!');
+  it('should link to page about', () => {
+    const fixture = TestBed.createComponent(HeaderComponent);
+    const els = fixture.debugElement.queryAll( By.directive(RouterLinkWithHref));
+    const routersLink = els.map( el => el.attributes.routerLink);
+    expect(routersLink).toContain('/about');
   });
 });

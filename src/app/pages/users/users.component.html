@@ -1,0 +1,7 @@
+<div data-test="user" *ngFor="let user of users$ | async">
+  <div style="cursor: pointer" (click)="goToUser(user.id)">
+    <span data-test="name">{{ user.name }}</span>
+    -
+    <span data-test="lastName">{{ user.lastname }}</span>
+  </div>
+</div>
